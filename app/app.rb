@@ -1,5 +1,5 @@
 require 'sinatra/base'
-require '/Users/duncanskinner/Documents/makers_academy/course/week_4/weekly_challenge/lib/bookmark_manager.rb'
+require_relative '../lib/bookmark_manager'
 
 class Bookmark < Sinatra::Base
 enable :sessions
@@ -8,12 +8,20 @@ get '/' do
   erb :index
 end
 
-get '/test' do
-  "Hello World"
+get '/bookmarks/new' do
+  erb :new_bookmark
+end
+
+post '/bookmarks' do
+  url = params['url']
+  title = params['title']
+  BookmarkManager.create(url: params[:url], title: params[:title])
+  redirect '/bookmarks'
 end
 
 get '/bookmarks' do
   @bookmarks = BookmarkManager.all
+  p BookmarkManager.create
   erb :bookmarks
 end
 

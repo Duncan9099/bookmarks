@@ -11,13 +11,24 @@
 # a separate helper file that requires the additional dependencies and performs
 # the additional setup, and require it from the spec files that actually need
 # it.
-ENV['RACK_ENV'] = "test"
+require_relative './setup_test_database'
+
+ENV['ENVIRONMENT'] = "test"
+
+RSpec.configure do |config|
+  config.before(:each) do
+    setup_test_database
+  end
+end
+
+# ENV['RACK_ENV'] = "test"
 
 require File.join(File.dirname(__FILE__), '..', 'app/app.rb')
 
 require 'capybara'
 require 'capybara/rspec'
 require 'features/web_helper'
+
 
 Capybara.app = Bookmark
 
